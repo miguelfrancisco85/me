@@ -11,7 +11,7 @@ safe: true
 
 
 # edit here to achieve your personal greatness
-url: http://username.github.io/
+url: https://www.miguelnunezburguera.com
 baseurl: /
 title: Miguel Francisco Nuñez Bueguera
 author: Miguel Francisco Nuñez Burguera
@@ -22,10 +22,10 @@ github:  miguelfrancisco85# username
 twitter: Miguelfrancisco
 linkedin: miguel-francisco-nunez-burguera
 stackoverflow: /users/9019014/miguelfrancisco85   #e.g: users/2735833/proton1h1
-medium: username #e.g: NobelPeaceOslo
+#medium: username #e.g: NobelPeaceOslo
 #Comment out if you don't want disqus
-disqus: username
-google_analytics: UA-69391421-1
+#disqus: username
+#google_analytics: UA-69391421-1
 
 
 # needed for travis-ci build
