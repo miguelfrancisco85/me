@@ -83,20 +83,18 @@
 
 <h3>Step 2: Configure MetalLB</h3>
 <p>Create a ConfigMap defining the address pool:</p>
-<pre><code>kubectl apply -f - <<EOF
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: metallb-system
-  name: config
-data:
-  config: |
-    address-pools:
-    - name: default-pool
-      protocol: layer2
-      addresses:
-      - 192.168.1.100-192.168.1.200
-EOF</code></pre>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">metallb-system</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">config</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">config</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">address-pools:</span>
+    <span class="s">- name: default-pool</span>
+      <span class="s">protocol: layer2</span>
+      <span class="s">addresses:</span>
+      <span class="s">- 192.168.1.100-192.168.1.200</span></code></pre></figure>
 
 <h3>Step 3: Verify Installation</h3>
 <pre><code>kubectl get pods -n metallb-system</code></pre>
@@ -104,20 +102,18 @@ EOF</code></pre>
 <h2>Exposing a Service with MetalLB</h2>
 
 <h3>Step 1: Create a LoadBalancer Service</h3>
-<pre><code>kubectl apply -f - <<EOF
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-service
-spec:
-  selector:
-    app: my-app
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
-  type: LoadBalancer
-EOF</code></pre>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">my-app</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="m">80</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">LoadBalancer</span></code></pre></figure>
 
 <h3>Step 2: Check the Assigned External IP</h3>
 <pre><code>kubectl get svc my-service</code></pre>

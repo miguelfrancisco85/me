@@ -89,22 +89,20 @@ helm install traefik traefik/traefik</code></pre>
 <h2>Exposing Services with Traefik</h2>
 
 <h3>Step 1: Create an IngressRoute</h3>
-<pre><code>kubectl apply -f - <<EOF
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: my-service
-  namespace: default
-spec:
-  entryPoints:
-    - web
-  routes:
-  - match: Host(`my-service.example.com`)
-    kind: Rule
-    services:
-    - name: my-service
-      port: 80
-EOF</code></pre>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">traefik.containo.us/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">IngressRoute</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">entryPoints</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">web</span>
+  <span class="na">routes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">match</span><span class="pi">:</span> <span class="s">Host(`my-service.example.com`)</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">Rule</span>
+    <span class="na">services</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="s">80</span></code></pre></figure>
 
 <h3>Step 2: Verify Routing</h3>
 <pre><code>kubectl get ingressroutes -n default</code></pre>

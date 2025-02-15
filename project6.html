@@ -31,7 +31,7 @@ helm install traefik traefik/traefik</code></pre>
 <h2>Exposing Services with Traefik</h2>
 
 <h3>Step 1: Create an IngressRoute</h3>
-<pre><code>kubectl apply -f - <<EOF
+{% highlight yaml %}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -46,7 +46,7 @@ spec:
     services:
     - name: my-service
       port: 80
-EOF</code></pre>
+{% endhighlight %}
 
 <h3>Step 2: Verify Routing</h3>
 <pre><code>kubectl get ingressroutes -n default</code></pre>

@@ -25,7 +25,7 @@ title: "MetalLB"
 
 <h3>Step 2: Configure MetalLB</h3>
 <p>Create a ConfigMap defining the address pool:</p>
-<pre><code>kubectl apply -f - <<EOF
+{% highlight yaml %}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -38,7 +38,7 @@ data:
       protocol: layer2
       addresses:
       - 192.168.1.100-192.168.1.200
-EOF</code></pre>
+{% endhighlight %}
 
 <h3>Step 3: Verify Installation</h3>
 <pre><code>kubectl get pods -n metallb-system</code></pre>
@@ -46,7 +46,7 @@ EOF</code></pre>
 <h2>Exposing a Service with MetalLB</h2>
 
 <h3>Step 1: Create a LoadBalancer Service</h3>
-<pre><code>kubectl apply -f - <<EOF
+{% highlight yaml %}
 apiVersion: v1
 kind: Service
 metadata:
@@ -59,7 +59,7 @@ spec:
     port: 80
     targetPort: 80
   type: LoadBalancer
-EOF</code></pre>
+{% endhighlight %}
 
 <h3>Step 2: Check the Assigned External IP</h3>
 <pre><code>kubectl get svc my-service</code></pre>
