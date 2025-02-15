@@ -9,7 +9,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
     
-      <title>Now seriously something real</title>
+      <title>MetalLB</title>
     
 
     <!-- Bootstrap -->
@@ -64,44 +64,171 @@
     <div class="container">
 	<div class="blog-post">
 		<h3>
-		  <strong><a href="/post5.html">Now seriously something real</a></strong>
+		  <strong><a href="/post5.html">MetalLB</a></strong>
 		</h3>
 	</div>
 	<div class="blog-title">
 		<h4>
-		February 10, 2013
+		February 13, 2025
 			&nbsp;&nbsp;
 			
-			 <span class="label label-success">News</span>
+			 <span class="label label-success">Kubernetes</span>
 			
-			 <span class="label label-success">Tags</span>
+			 <span class="label label-success">Load Balancer</span>
 			
-			 <span class="label label-success">Blog</span>
+			 <span class="label label-success">Networking</span>
 			
-			 <span class="label label-success">Post</span>
+			 <span class="label label-success">Bare Metal</span>
 			
 		</h4>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="blogpost">
-			  <p>As I engage in the so-called “bull sessions” around and about the school, I too often find that most college men have a misconception of the purpose of education. Most of the “brethren” think that education should equip them with the proper instruments of exploitation so that they can forever trample over the masses. Still others think that education should furnish them with noble ends rather than means to an end.</p>
+			  <h1 id="metallb-load-balancer-for-bare-metal-kubernetes">MetalLB: Load Balancer for Bare Metal Kubernetes</h1>
 
-<p>It seems to me that education has a two-fold function to perform in the life of man and in society: the one is utility and the other is culture. Education must enable a man to become more efficient, to achieve with increasing facility the ligitimate goals of his life.</p>
+<h2 id="what-is-metallb">What is MetalLB?</h2>
 
-<p>Education must also train one for quick, resolute and effective thinking. To think incisively and to think for one’s self is very difficult. We are prone to let our mental life become invaded by legions of half truths, prejudices, and propaganda. At this point, I often wonder whether or not education is fulfilling its purpose. A great majority of the so-called educated people do not think logically and scientifically. Even the press, the classroom, the platform, and the pulpit in many instances do not give us objective and unbiased truths. To save man from the morass of propaganda, in my opinion, is one of the chief aims of education. Education must enable one to sift and weigh evidence, to discern the true from the false, the real from the unreal, and the facts from the fiction.</p>
+<p><strong>MetalLB</strong> is a load balancer solution for Kubernetes clusters running on bare metal. It provides network load balancing functionality where cloud provider solutions like AWS ELB or GCP LB are unavailable. This document covers its key features, installation steps, and additional configurations to optimize performance in Kubernetes clusters.</p>
 
-<p>The function of education, therefore, is to teach one to think intensively and to think critically. But education which stops with efficiency may prove the greatest menace to society. The most dangerous criminal may be the man gifted with reason, but with no morals.</p>
+<h2 id="key-features-of-metallb">Key Features of MetalLB</h2>
 
-<p>The late Eugene Talmadge, in my opinion, possessed one of the better minds of Georgia, or even America. Moreover, he wore the Phi Beta Kappa key. By all measuring rods, Mr. Talmadge could think critically and intensively; yet he contends that I am an inferior being. Are those the types of men we call educated?</p>
+<ul>
+  <li><strong>BGP and Layer 2 Modes:</strong> Supports both Border Gateway Protocol (BGP) and Layer 2 (ARP-based) load balancing.</li>
+  <li><strong>Cloud-Native Integration:</strong> Works seamlessly with Kubernetes Services of type LoadBalancer.</li>
+  <li><strong>Custom IP Address Pools:</strong> Allows administrators to define external IP ranges.</li>
+  <li><strong>Lightweight and Simple:</strong> Easy to configure and deploy.</li>
+  <li><strong>High Availability:</strong> Can be configured for redundancy in large-scale environments.</li>
+  <li><strong>Supports IPv4 and IPv6:</strong> Provides flexibility for modern networking needs.</li>
+</ul>
 
-<p>We must remember that intelligence is not enough. Intelligence plus character–that is the goal of true education. The complete education gives one not only power of concentration, but worthy objectives upon which to concentrate. The broad education will, therefore, transmit to one not only the accumulated knowledge of the race but also the accumulated experience of social living.</p>
+<h2 id="installing-metallb-on-kubernetes">Installing MetalLB on Kubernetes</h2>
 
-<p>If we are not careful, our colleges will produce a group of close-minded, unscientific, illogical propagandists, consumed with immoral acts. Be careful, “brethren!” Be careful, teachers!</p>
+<h3 id="step-1-install-metallb">Step 1: Install MetalLB</h3>
 
-<p>By Martin Luther King</p>
+<p>Apply the official MetalLB manifests:</p>
 
-<p>An American pastor, activist, humanitarian. People know him for leading the African-American Civil Rights movement using nonviolent civil disobedience.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> https://raw.githubusercontent.com/metallb/metallb/main/config/manifests/metallb-native.yaml
+</code></pre></div></div>
+
+<h3 id="step-2-configure-metallb">Step 2: Configure MetalLB</h3>
+
+<p>Create a ConfigMap defining the address pool:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">metallb-system</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">config</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">config</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">address-pools:</span>
+    <span class="s">- name: default-pool</span>
+      <span class="s">protocol: layer2</span>
+      <span class="s">addresses:</span>
+      <span class="s">- 192.168.1.100-192.168.1.200</span>
+</code></pre></div></div>
+
+<h3 id="step-3-verify-installation">Step 3: Verify Installation</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-n</span> metallb-system
+</code></pre></div></div>
+
+<h2 id="exposing-a-service-with-metallb">Exposing a Service with MetalLB</h2>
+
+<h3 id="step-1-create-a-loadbalancer-service">Step 1: Create a LoadBalancer Service</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">my-app</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="m">80</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">LoadBalancer</span>
+</code></pre></div></div>
+
+<h3 id="step-2-check-the-assigned-external-ip">Step 2: Check the Assigned External IP</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get svc my-service
+</code></pre></div></div>
+
+<p>The external IP should be assigned from the configured range.</p>
+
+<h2 id="advanced-configuration-options">Advanced Configuration Options</h2>
+
+<h3 id="enabling-bgp-mode">Enabling BGP Mode</h3>
+
+<p>For a more robust networking setup, BGP mode can be configured to integrate with external routers:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">metallb.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">BGPPeer</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">peer1</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">metallb-system</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">myASN</span><span class="pi">:</span> <span class="m">64512</span>
+  <span class="na">peerASN</span><span class="pi">:</span> <span class="m">64513</span>
+  <span class="na">peerAddress</span><span class="pi">:</span> <span class="s">192.168.1.1</span>
+</code></pre></div></div>
+
+<p>Apply the configuration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> bgp-config.yaml
+</code></pre></div></div>
+
+<h3 id="using-metallb-with-ingress-controllers">Using MetalLB with Ingress Controllers</h3>
+
+<p>MetalLB can work alongside Kubernetes ingress controllers (such as Nginx or Traefik) to expose applications with a public-facing IP:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">example-ingress</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">example.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+        <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+        <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">service</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+            <span class="na">port</span><span class="pi">:</span>
+              <span class="na">number</span><span class="pi">:</span> <span class="m">80</span>
+</code></pre></div></div>
+
+<h2 id="troubleshooting-metallb-issues">Troubleshooting MetalLB Issues</h2>
+
+<h3 id="checking-logs">Checking Logs</h3>
+
+<p>If MetalLB is not working as expected, check the logs of the MetalLB controller:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl logs <span class="nt">-n</span> metallb-system deploy/controller
+</code></pre></div></div>
+
+<h3 id="debugging-ip-allocation">Debugging IP Allocation</h3>
+
+<p>If services are not getting an external IP, verify the allocated IP pool:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe configmap config <span class="nt">-n</span> metallb-system
+</code></pre></div></div>
+
+<h3 id="resolving-port-conflicts">Resolving Port Conflicts</h3>
+
+<p>Ensure that no other services are using the same ports by running:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netstat <span class="nt">-tulnp</span> | <span class="nb">grep </span>80
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>MetalLB enables Kubernetes clusters running on bare metal to leverage external load balancing without cloud provider dependencies. By following these steps, you can set up MetalLB to handle Kubernetes LoadBalancer services efficiently, integrate it with ingress controllers, and configure BGP for advanced networking needs.</p>
 
 			   <hr>
 			   <div class="related-posts">
@@ -110,12 +237,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	June  5, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post1.html">A Full and Comprehensive Style Test (HTML)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post7.html">Long-Term Dividend Investing</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -123,12 +250,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	May 27, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post2.html">Another markdown full cheatsheet demo (Markdown)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post6.html">Traefik</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -136,12 +263,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	April  2, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post3.html">Now some lorem ipsum</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post4.html">k3s</a></strong>
 								 </h6>
 							 </div>
 						</div>

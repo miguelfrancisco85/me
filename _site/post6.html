@@ -9,7 +9,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
     
-      <title>I have a dream <3</title>
+      <title>Traefik</title>
     
 
     <!-- Bootstrap -->
@@ -64,124 +64,179 @@
     <div class="container">
 	<div class="blog-post">
 		<h3>
-		  <strong><a href="/post6.html">I have a dream <3</a></strong>
+		  <strong><a href="/post6.html">Traefik</a></strong>
 		</h3>
 	</div>
 	<div class="blog-title">
 		<h4>
-		January 24, 2013
+		February 13, 2025
 			&nbsp;&nbsp;
-			
-			 <span class="label label-success">News</span>
-			
-			 <span class="label label-success">Tags</span>
-			
-			 <span class="label label-success">Blog</span>
-			
-			 <span class="label label-success">Post</span>
 			
 		</h4>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="blogpost">
-			  <p>I am happy to join with you today in what will go down in history as the greatest demonstration for freedom in the history of our nation.</p>
+			  <h1 id="traefik">Traefik</h1>
 
-<p>Five score years ago, a great American, in whose symbolic shadow we stand today, signed the Emancipation Proclamation. This momentous decree came as a great beacon light of hope to millions of Negro slaves who had been seared in the flames of withering injustice. It came as a joyous daybreak to end the long night of their captivity.</p>
+<h1 id="what-is-traefik">What is Traefik?</h1>
 
-<p>But one hundred years later, the Negro still is not free. One hundred years later, the life of the Negro is still sadly crippled by the manacles of segregation and the chains of discrimination. One hundred years later, the Negro lives on a lonely island of poverty in the midst of a vast ocean of material prosperity. One hundred years later, the Negro is still languished in the corners of American society and finds himself an exile in his own land. And so we’ve come here today to dramatize a shameful condition.</p>
+<p><strong>Traefik</strong> is a modern, cloud-native HTTP reverse proxy and load balancer designed to easily manage ingress traffic in Kubernetes and other containerized environments. It dynamically discovers services and automatically configures itself. This document covers its key features, installation steps, and additional best practices for optimizing performance in Kubernetes clusters.</p>
 
-<p>In a sense we’ve come to our nation’s capital to cash a check. When the architects of our republic wrote the magnificent words of the Constitution and the Declaration of Independence, they were signing a promissory note to which every American was to fall heir. This note was a promise that all men, yes, black men as well as white men, would be guaranteed the “unalienable Rights” of “Life, Liberty and the pursuit of Happiness.” It is obvious today that America has defaulted on this promissory note, insofar as her citizens of color are concerned. Instead of honoring this sacred obligation, America has given the Negro people a bad check, a check which has come back marked “insufficient funds.”</p>
+<h2 id="key-features-of-traefik">Key Features of Traefik</h2>
 
-<p>But we refuse to believe that the bank of justice is bankrupt. We refuse to believe that there are insufficient funds in the great vaults of opportunity of this nation. And so, we’ve come to cash this check, a check that will give us upon demand the riches of freedom and the security of justice.</p>
+<ul>
+  <li><strong>Dynamic Configuration:</strong> Automatically detects new services and updates its routing table.</li>
+  <li><strong>Let’s Encrypt Integration:</strong> Supports automatic SSL certificate management.</li>
+  <li><strong>Traffic Routing:</strong> Provides advanced load balancing and traffic routing.</li>
+  <li><strong>Observability:</strong> Built-in metrics, logging, and tracing support.</li>
+  <li><strong>Multi-Protocol Support:</strong> Handles HTTP, TCP, UDP, and WebSockets.</li>
+  <li><strong>Native Kubernetes Integration:</strong> Works seamlessly with Kubernetes Ingress and Custom Resource Definitions (CRDs).</li>
+  <li><strong>Middleware Support:</strong> Allows customization of request processing (e.g., authentication, rate limiting).</li>
+</ul>
 
-<p>We have also come to this hallowed spot to remind America of the fierce urgency of Now. This is no time to engage in the luxury of cooling off or to take the tranquilizing drug of gradualism. Now is the time to make real the promises of democracy. Now is the time to rise from the dark and desolate valley of segregation to the sunlit path of racial justice. Now is the time to lift our nation from the quicksands of racial injustice to the solid rock of brotherhood. Now is the time to make justice a reality for all of God’s children.</p>
+<h2 id="installing-traefik-on-kubernetes">Installing Traefik on Kubernetes</h2>
 
-<p>It would be fatal for the nation to overlook the urgency of the moment. This sweltering summer of the Negro’s legitimate discontent will not pass until there is an invigorating autumn of freedom and equality. Nineteen sixty-three is not an end, but a beginning. And those who hope that the Negro needed to blow off steam and will now be content will have a rude awakening if the nation returns to business as usual. And there will be neither rest nor tranquility in America until the Negro is granted his citizenship rights. The whirlwinds of revolt will continue to shake the foundations of our nation until the bright day of justice emerges.</p>
+<h3 id="step-1-install-traefik-using-helm">Step 1: Install Traefik Using Helm</h3>
 
-<p>But there is something that I must say to my people, who stand on the warm threshold which leads into the palace of justice: In the process of gaining our rightful place, we must not be guilty of wrongful deeds. Let us not seek to satisfy our thirst for freedom by drinking from the cup of bitterness and hatred. We must forever conduct our struggle on the high plane of dignity and discipline. We must not allow our creative protest to degenerate into physical violence. Again and again, we must rise to the majestic heights of meeting physical force with soul force.</p>
+<p>Add the official Traefik Helm repository and install it:</p>
 
-<p>The marvelous new militancy which has engulfed the Negro community must not lead us to a distrust of all white people, for many of our white brothers, as evidenced by their presence here today, have come to realize that their destiny is tied up with our destiny. And they have come to realize that their freedom is inextricably bound to our freedom.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm repo add traefik https://traefik.github.io/charts
+helm repo update
+helm <span class="nb">install </span>traefik traefik/traefik
+</code></pre></div></div>
 
-<p>We cannot walk alone.</p>
+<h3 id="step-2-verify-installation">Step 2: Verify Installation</h3>
 
-<p>And as we walk, we must make the pledge that we shall always march ahead.</p>
+<p>Check if the Traefik pods are running:</p>
 
-<p>We cannot turn back.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-n</span> kube-system
+</code></pre></div></div>
 
-<p>There are those who are asking the devotees of civil rights, “When will you be satisfied?” We can never be satisfied as long as the Negro is the victim of the unspeakable horrors of police brutality. We can never be satisfied as long as our bodies, heavy with the fatigue of travel, cannot gain lodging in the motels of the highways and the hotels of the cities. We cannot be satisfied as long as the negro’s basic mobility is from a smaller ghetto to a larger one. We can never be satisfied as long as our children are stripped of their self-hood and robbed of their dignity by signs stating: “For Whites Only.” We cannot be satisfied as long as a Negro in Mississippi cannot vote and a Negro in New York believes he has nothing for which to vote. No, no, we are not satisfied, and we will not be satisfied until “justice rolls down like waters, and righteousness like a mighty stream.”</p>
+<h2 id="exposing-services-with-traefik">Exposing Services with Traefik</h2>
 
-<p>I am not unmindful that some of you have come here out of great trials and tribulations. Some of you have come fresh from narrow jail cells. And some of you have come from areas where your quest – quest for freedom left you battered by the storms of persecution and staggered by the winds of police brutality. You have been the veterans of creative suffering. Continue to work with the faith that unearned suffering is redemptive. Go back to Mississippi, go back to Alabama, go back to South Carolina, go back to Georgia, go back to Louisiana, go back to the slums and ghettos of our northern cities, knowing that somehow this situation can and will be changed.</p>
+<h3 id="step-1-create-an-ingressroute">Step 1: Create an IngressRoute</h3>
 
-<p>Let us not wallow in the valley of despair, I say to you today, my friends.</p>
+<p>Define an <strong>IngressRoute</strong> resource for routing traffic to a service:</p>
 
-<p>And so even though we face the difficulties of today and tomorrow, I still have a dream. It is a dream deeply rooted in the American dream.</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">traefik.containo.us/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">IngressRoute</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">entryPoints</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">web</span>
+  <span class="na">routes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">match</span><span class="pi">:</span> <span class="s">Host(`my-service.example.com`)</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">Rule</span>
+    <span class="na">services</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+</code></pre></div></div>
 
-<p>I have a dream that one day this nation will rise up and live out the true meaning of its creed: “We hold these truths to be self-evident, that all men are created equal.”</p>
+<h3 id="step-2-verify-routing">Step 2: Verify Routing</h3>
 
-<p>I have a dream that one day on the red hills of Georgia, the sons of former slaves and the sons of former slave owners will be able to sit down together at the table of brotherhood.</p>
+<p>Ensure the routing is correctly configured:</p>
 
-<p>I have a dream that one day even the state of Mississippi, a state sweltering with the heat of injustice, sweltering with the heat of oppression, will be transformed into an oasis of freedom and justice.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get ingressroutes <span class="nt">-n</span> default
+</code></pre></div></div>
 
-<p>I have a dream that my four little children will one day live in a nation where they will not be judged by the color of their skin but by the content of their character.</p>
+<h2 id="advanced-configuration-options">Advanced Configuration Options</h2>
 
-<p>I have a <strong>dream</strong> today!</p>
+<h3 id="enabling-https-with-lets-encrypt">Enabling HTTPS with Let’s Encrypt</h3>
 
-<p>I have a dream that one day, down in Alabama, with its vicious racists, with its governor having his lips dripping with the words of “interposition” and “nullification” – one day right there in Alabama little black boys and black girls will be able to join hands with little white boys and white girls as sisters and brothers.</p>
+<p>To enable automatic HTTPS certificates, configure Traefik with <strong>Let’s Encrypt</strong> support:</p>
 
-<p>I have a <strong>dream</strong> today!</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">traefik.containo.us/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">IngressRoute</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">secure-service</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">entryPoints</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">websecure</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="na">certResolver</span><span class="pi">:</span> <span class="s">myresolver</span>
+  <span class="na">routes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">match</span><span class="pi">:</span> <span class="s">Host(`secure.example.com`)</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">Rule</span>
+    <span class="na">services</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">443</span>
+</code></pre></div></div>
 
-<p>I have a dream that one day every valley shall be exalted, and every hill and mountain shall be made low, the rough places will be made plain, and the crooked places will be made straight; “and the glory of the Lord shall be revealed and all flesh shall see it together.”</p>
+<p>Apply the configuration:</p>
 
-<p>This is our hope, and this is the faith that I go back to the South with.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> ingressroute-secure.yaml
+</code></pre></div></div>
 
-<p>With this faith, we will be able to hew out of the mountain of despair a stone of hope. With this faith, we will be able to transform the jangling discords of our nation into a beautiful symphony of brotherhood. With this faith, we will be able to work together, to pray together, to struggle together, to go to jail together, to stand up for freedom together, knowing that we will be free one day.</p>
+<h3 id="load-balancing-between-multiple-pods">Load Balancing Between Multiple Pods</h3>
 
-<p>And this will be the day – this will be the day when all of God’s children will be able to sing with new meaning:</p>
+<p>If your service runs multiple replicas, Traefik automatically distributes traffic between them. However, for more control, you can specify weighted load balancing:</p>
 
-<blockquote>
-  <p>My country ‘tis of thee, sweet land of liberty, of thee I sing.</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">weight</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">backup-service</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">weight</span><span class="pi">:</span> <span class="m">1</span>
+</code></pre></div></div>
 
-  <p>Land where my fathers died, land of the Pilgrim’s pride,</p>
+<h3 id="adding-middleware-for-authentication">Adding Middleware for Authentication</h3>
 
-  <p>From every mountainside, let freedom ring!</p>
-</blockquote>
+<p>You can add authentication middleware to restrict access:</p>
 
-<p>And if America is to be a great nation, this must become true.</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">traefik.containo.us/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Middleware</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">auth-middleware</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">basicAuth</span><span class="pi">:</span>
+    <span class="na">users</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">admin:$apr1$randomhashvalue"</span>  <span class="c1"># Use `htpasswd` to generate hashes</span>
+</code></pre></div></div>
 
-<p>And so let freedom ring from the prodigious hilltops of New Hampshire.</p>
+<p>Apply the middleware and attach it to an  <strong>IngressRoute</strong> :</p>
 
-<blockquote>
-  <p>Let freedom ring from the mighty mountains of New York.</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">routes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">match</span><span class="pi">:</span> <span class="s">Host(`protected.example.com`)</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">Rule</span>
+    <span class="na">middlewares</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">auth-middleware</span>
+    <span class="na">services</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">my-service</span>
+        <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+</code></pre></div></div>
 
-  <p>Let freedom ring from the heightening Alleghenies of Pennsylvania.</p>
+<h2 id="troubleshooting-traefik-issues">Troubleshooting Traefik Issues</h2>
 
-  <p>Let freedom ring from the snow-capped Rockies of Colorado.</p>
+<h3 id="checking-logs">Checking Logs</h3>
 
-  <p>Let freedom ring from the curvaceous slopes of California.</p>
-</blockquote>
+<p>If Traefik is not behaving as expected, check the logs:</p>
 
-<p>But not only that:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl logs <span class="nt">-l</span> app.kubernetes.io/name<span class="o">=</span>traefik <span class="nt">-n</span> kube-system
+</code></pre></div></div>
 
-<blockquote>
-  <p>Let freedom ring from Stone Mountain of Georgia.</p>
+<h3 id="debugging-routing-issues">Debugging Routing Issues</h3>
 
-  <p>Let freedom ring from Lookout Mountain of Tennessee.</p>
+<p>Ensure Traefik detects the service and ingress correctly:</p>
 
-  <p>Let freedom ring from every hill and molehill of Mississippi.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe ingressroutes <span class="nt">-n</span> default
+</code></pre></div></div>
 
-  <p>From every mountainside, let freedom ring.</p>
-</blockquote>
+<h3 id="verifying-certificate-issues">Verifying Certificate Issues</h3>
 
-<p>And when this happens, and when we allow freedom ring, when we let it ring from every village and every hamlet, from every state and every city, we will be able to speed up that day when all of God’s children, black men and white men, Jews and Gentiles, Protestants and Catholics, will be able to join hands and sing in the words of the old Negro spiritual:</p>
+<p>Check if the certificates are properly generated:</p>
 
-<p><em>Free at last! Free at last!</em></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get certificates <span class="nt">-n</span> default
+</code></pre></div></div>
 
-<p><em>Thank God Almighty, we are free at last!</em></p>
+<h2 id="conclusion">Conclusion</h2>
 
-<p>By <strong>Martin Luther King</strong></p>
-
-<p>An American pastor, activist, humanitarian. People know him for leading the African-American Civil Rights movement using nonviolent civil disobedience.</p>
+<p>Traefik simplifies traffic management in Kubernetes environments with its dynamic service discovery, easy SSL integration, and advanced routing capabilities. By following these steps, you can deploy and configure Traefik to handle ingress traffic efficiently, enhance security with authentication middleware, and optimize traffic routing for high availability.</p>
 
 			   <hr>
 			   <div class="related-posts">
@@ -190,12 +245,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	June  5, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post1.html">A Full and Comprehensive Style Test (HTML)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post7.html">Long-Term Dividend Investing</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -203,12 +258,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	May 27, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post2.html">Another markdown full cheatsheet demo (Markdown)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post5.html">MetalLB</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -216,12 +271,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	April  2, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post3.html">Now some lorem ipsum</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post4.html">k3s</a></strong>
 								 </h6>
 							 </div>
 						</div>

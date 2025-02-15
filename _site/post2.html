@@ -9,7 +9,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
     
-      <title>Another markdown full cheatsheet demo (Markdown)</title>
+      <title>ESPHome</title>
     
 
     <!-- Bootstrap -->
@@ -64,206 +64,78 @@
     <div class="container">
 	<div class="blog-post">
 		<h3>
-		  <strong><a href="/post2.html">Another markdown full cheatsheet demo (Markdown)</a></strong>
+		  <strong><a href="/post2.html">ESPHome</a></strong>
 		</h3>
 	</div>
 	<div class="blog-title">
 		<h4>
-		May 27, 2013
+		February 13, 2025
 			&nbsp;&nbsp;
 			
-			 <span class="label label-success">News</span>
+			 <span class="label label-success">Home Automation</span>
 			
-			 <span class="label label-success">Tags</span>
+			 <span class="label label-success">Microcontrollers</span>
 			
-			 <span class="label label-success">Blog</span>
+			 <span class="label label-success">IoT</span>
 			
-			 <span class="label label-success">Post</span>
+			 <span class="label label-success">ESP32</span>
 			
 		</h4>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="blogpost">
-			  <blockquote>
-  <p>This is Markdown Cheatsheet Demo for <strong>Sustain</strong>, this Jekyll theme. Please check the raw content of this file for the markdown usage.</p>
-</blockquote>
+			  <h1 id="esp-and-nodemcu">ESP and NodeMCU</h1>
 
-<h2 id="typography-elements-in-one">Typography Elements in One</h2>
+<h2 id="what-are-esp-and-nodemcu">What are ESP and NodeMCU?</h2>
 
-<p>Let’s start with a informative paragraph. <strong>This text is bolded.</strong> But not this one! <em>How about italic text?</em> Cool right? Ok, let’s <strong><em>combine</em></strong> them together. Yeah, that’s right! I have code to highlight, so <code class="language-plaintext highlighter-rouge">ThisIsMyCode()</code>. What a nice! Good people will hyperlink away, so <a href="#">here we go</a> or <a href="http://www.example.com">http://www.example.com</a>.</p>
+<p>ESP (Espressif Systems Processors) are low-cost microcontrollers widely used for IoT (Internet of Things) applications. These powerful, Wi-Fi-enabled chips allow users to create smart devices, automation projects, and home monitoring solutions.</p>
 
-<div class="divider"></div>
+<p>NodeMCU is a development board based on the ESP8266 chip. It simplifies programming and prototyping by providing a built-in USB-to-serial interface and additional GPIO pins for connecting sensors and actuators.</p>
 
-<h2 id="headings-h1-to-h6">Headings H1 to H6</h2>
+<h2 id="popular-esp-models">Popular ESP Models</h2>
 
-<h1 id="h1-heading">H1 Heading</h1>
+<ul>
+  <li><strong>ESP8266:</strong> A compact and affordable Wi-Fi-enabled microcontroller, commonly used in small IoT projects.</li>
+  <li><strong>ESP32:</strong> A more advanced version with dual-core processing, Bluetooth connectivity, and additional GPIO pins, ideal for complex automation systems.</li>
+  <li><strong>NodeMCU:</strong> A development board that simplifies working with ESP8266 and provides a user-friendly environment for programming and connecting components.</li>
+</ul>
 
-<h2 id="h2-heading">H2 Heading</h2>
+<h2 id="uses-of-esp-in-home-automation">Uses of ESP in Home Automation</h2>
 
-<h3 id="h3-heading">H3 Heading</h3>
+<ul>
+  <li>Smart switches and relays for controlling lights and appliances remotely.</li>
+  <li>Environmental monitoring using temperature, humidity, and air quality sensors.</li>
+  <li>Security systems with motion sensors and cameras.</li>
+  <li>Control of water consumption to monitor and manage usage efficiently.</li>
+  <li>Control of electrical consumption for optimizing energy usage and reducing waste.</li>
+  <li>Integration with Home Assistant to enhance home automation capabilities.</li>
+</ul>
 
-<h4 id="h4-heading">H4 Heading</h4>
+<h2 id="installing-firmware-on-esp">Installing Firmware on ESP</h2>
 
-<h5 id="h5-heading">H5 Heading</h5>
-
-<h6 id="h6-heading">H6 Heading</h6>
-
-<div class="divider"></div>
-
-<h2 id="footnote">Footnote</h2>
-
-<p>Let’s say you have text that you want to refer with a footnote, you can do that too! This is an example for the footnote number one <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. You can even add more footnotes, with link! <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
-
-<div class="divider"></div>
-
-<h2 id="blockquote">Blockquote</h2>
-
-<blockquote>
-  <p>Start by doing what’s necessary; then do what’s possible; and suddenly you are doing the impossible. –Francis of Assisi</p>
-</blockquote>
-
-<p><strong>NOTE:</strong> This theme does NOT support nested blockquotes.</p>
-
-<div class="divider"></div>
-
-<h2 id="list-items">List Items</h2>
+<p>To program an ESP device, you need to install the firmware using a programming tool like the Arduino IDE or ESPHome. Follow these steps:</p>
 
 <ol>
-  <li>First order list item</li>
-  <li>Second item</li>
+  <li>Install Arduino IDE and add the ESP board manager.</li>
+  <li>Connect your ESP device to your computer via USB.</li>
+  <li>Open Arduino IDE and select the appropriate board (e.g., ESP8266 or ESP32).</li>
+  <li>Install required libraries, such as ESPHome for Home Assistant integration.</li>
+  <li>Write a basic script to test the connection (e.g., blinking an LED or connecting to Wi-Fi).</li>
+  <li>Upload the script to the ESP and monitor its functionality.</li>
 </ol>
 
-<ul>
-  <li>Unordered list can use asterisks</li>
-  <li>Or minuses</li>
-  <li>Or pluses</li>
-</ul>
+<h2 id="setting-up-esp-for-home-automation">Setting up ESP for Home Automation</h2>
 
-<div class="divider"></div>
+<p>To integrate ESP with Home Assistant:</p>
 
-<h2 id="code-blocks">Code Blocks</h2>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">JavaScript syntax highlighting</span><span class="dl">"</span><span class="p">;</span>
-<span class="nf">alert</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span></code></pre></figure>
-
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="n">sys</span>  
-<span class="n">s</span> <span class="o">=</span> <span class="s">"Python syntax highlighting"</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  
-<span class="k">def</span> <span class="nf">run_some_function</span><span class="p">():</span>
-    <span class="s">"Docs..."</span>
-    <span class="k">return</span></code></pre></figure>
-
-<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* css synthax highlighting */</span> 
-<span class="nf">#container</span> <span class="p">{</span>
-    <span class="nl">float</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
-    <span class="nl">margin</span><span class="p">:</span> <span class="m">0</span> <span class="m">-240px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
-<span class="p">}</span></code></pre></figure>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>No language indicated, so no syntax highlighting.
-But let's throw in a &lt;b&gt;tag&lt;/b&gt;.
-</code></pre></div></div>
-
-<div class="divider"></div>
-
-<h2 id="table">Table</h2>
-
-<h3 id="table-1-with-alignment">Table 1: With Alignment</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>Tables</th>
-      <th style="text-align: center">Are</th>
-      <th style="text-align: right">Cool</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>col 3 is</td>
-      <td style="text-align: center">right-aligned</td>
-      <td style="text-align: right">$1600</td>
-    </tr>
-    <tr>
-      <td>col 2 is</td>
-      <td style="text-align: center">centered</td>
-      <td style="text-align: right">$12</td>
-    </tr>
-    <tr>
-      <td>zebra stripes</td>
-      <td style="text-align: center">are neat</td>
-      <td style="text-align: right">$1</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3 id="table-2-with-typography-elements">Table 2: With Typography Elements</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>Markdown</th>
-      <th>Less</th>
-      <th>Pretty</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><em>Still</em></td>
-      <td><code class="language-plaintext highlighter-rouge">renders</code></td>
-      <td><strong>nicely</strong></td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="divider"></div>
-
-<h2 id="horizontal-line">Horizontal Line</h2>
-
-<p>The HTML <code class="language-plaintext highlighter-rouge">&lt;hr&gt;</code> element is for creating a “thematic break” between paragraph-level elements. In markdown, you can create a <code class="language-plaintext highlighter-rouge">&lt;hr&gt;</code> with any of the following:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">___</code>: three consecutive underscores</li>
-  <li><code class="language-plaintext highlighter-rouge">---</code>: three consecutive dashes</li>
-  <li><code class="language-plaintext highlighter-rouge">***</code>: three consecutive asterisks</li>
-</ul>
-
-<p>renders to:</p>
-
-<hr />
-
-<hr />
-
-<hr />
-
-<div class="divider"></div>
-
-<h2 id="media">Media</h2>
-
-<h3 id="youtube-embedded-iframe">YouTube Embedded Iframe</h3>
-
-<iframe width="420" height="315" src="https://www.youtube.com/embed/nN6QuNqmAwk" frameborder="0" allowfullscreen=""></iframe>
-
-<h3 id="image">Image</h3>
-
-<p><img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSn8cwf82ee9tfml4Wx-tsM5AUavJ_DRHIiXXE4RejRp0RF2L7f6g" alt="Nature" /></p>
-
-<div class="footnotes" role="doc-endnotes">
-  <ol>
-    <li id="fn:1" role="doc-endnote">
-      <p>Footnote number one yeah baby! <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
-    </li>
-    <li id="fn:2" role="doc-endnote">
-      <p>A footnote you can link to - <a href="#">click here!</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
+<ol>
+  <li>Install ESPHome on your Home Assistant instance.</li>
+  <li>Create a new ESPHome configuration file and define sensors, switches, or actuators.</li>
+  <li>Flash the ESP device with the generated firmware.</li>
+  <li>Connect the ESP to your home network.</li>
+  <li>Add the ESP device to Home Assistant and configure automation rules.</li>
+</ol>
 
 			   <hr>
 			   <div class="related-posts">
@@ -272,12 +144,12 @@ But let's throw in a &lt;b&gt;tag&lt;/b&gt;.
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	June  5, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post1.html">A Full and Comprehensive Style Test (HTML)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post7.html">Long-Term Dividend Investing</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -285,12 +157,12 @@ But let's throw in a &lt;b&gt;tag&lt;/b&gt;.
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	April  2, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post3.html">Now some lorem ipsum</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post6.html">Traefik</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -298,12 +170,12 @@ But let's throw in a &lt;b&gt;tag&lt;/b&gt;.
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	March 15, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post4.html">Continued...</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post5.html">MetalLB</a></strong>
 								 </h6>
 							 </div>
 						</div>

@@ -9,7 +9,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
     
-      <title>Continued...</title>
+      <title>k3s</title>
     
 
     <!-- Bootstrap -->
@@ -64,30 +64,140 @@
     <div class="container">
 	<div class="blog-post">
 		<h3>
-		  <strong><a href="/post4.html">Continued...</a></strong>
+		  <strong><a href="/post4.html">k3s</a></strong>
 		</h3>
 	</div>
 	<div class="blog-title">
 		<h4>
-		March 15, 2013
+		February 13, 2025
 			&nbsp;&nbsp;
 			
-			 <span class="label label-success">News</span>
+			 <span class="label label-success">Kubernetes</span>
 			
-			 <span class="label label-success">Tags</span>
+			 <span class="label label-success">Lightweight Kubernetes</span>
 			
-			 <span class="label label-success">Blog</span>
+			 <span class="label label-success">IoT</span>
 			
-			 <span class="label label-success">Post</span>
+			 <span class="label label-success">Edge Computing</span>
 			
 		</h4>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="blogpost">
-			  <p>Errem feugait inimicus ad usu, sit porro verterem ut, ne duo primis eloquentiam ullamcorper. Omnes discere ut est, prima inani cu cum. Eum ea saepe audiam animal. Duis meliore vel no. Sed mentitum ocurreret in. Iusto salutatus ea eum.</p>
+			  <h1 id="k3s-a-lightweight-kubernetes-distribution">k3s: A Lightweight Kubernetes Distribution</h1>
 
-<p>Minim dolore numquam vix an, soleat honestatis cotidieque eum cu. Sea ne ancillae voluptatum. At vim cibo veri, vim audire explicari maluisset id. Suscipit cotidieque pro id, alia tollit mandamus ad vix. Et meis tollit petentium mel, eu dico semper mel. Eius probo aeque ne per, id mollis erroribus efficiantur duo, dolor adversarium ne duo. Ius ex illud regione definitionem.</p>
+<h2 id="what-is-k3s">What is k3s?</h2>
+
+<p><strong>k3s</strong> is a lightweight Kubernetes distribution developed by Rancher Labs. It is designed for resource-constrained environments like IoT devices, home labs, or small-scale deployments. This document covers its key features and installation steps on both Raspberry Pi and multi-node clusters.</p>
+
+<h2 id="key-features-of-k3s">Key Features of k3s</h2>
+
+<ul>
+  <li><strong>Lightweight:</strong> Smaller footprint and fewer system resources than standard Kubernetes.</li>
+  <li><strong>Simplified Deployment:</strong> Runs as a single binary, reducing complexity.</li>
+  <li><strong>Built-in SQLite or etcd:</strong> Simplifies setup by eliminating external dependencies.</li>
+  <li><strong>IoT &amp; Edge Compatibility:</strong> Works well on Raspberry Pi and ARM architectures.</li>
+  <li><strong>Helm Support:</strong> Allows easy application deployment.</li>
+</ul>
+
+<h2 id="installing-k3s-on-raspberry-pi">Installing k3s on Raspberry Pi</h2>
+
+<h3 id="step-1-prepare-the-raspberry-pi">Step 1: Prepare the Raspberry Pi</h3>
+
+<p>Ensure your system is up to date:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt-get upgrade <span class="nt">-y</span>
+</code></pre></div></div>
+
+<h3 id="step-2-install-k3s">Step 2: Install k3s</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-sfL</span> https://get.k3s.io | sh -
+</code></pre></div></div>
+
+<p>This installs k3s as a service and sets up a single-node cluster.</p>
+
+<h3 id="step-3-verify-installation">Step 3: Verify Installation</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>kubectl get nodes
+</code></pre></div></div>
+
+<p>Your Raspberry Pi should be listed as  <strong>Ready</strong> .</p>
+
+<h3 id="step-4-deploy-a-test-application">Step 4: Deploy a Test Application</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create deployment nginx-test <span class="nt">--image</span><span class="o">=</span>nginx
+kubectl expose deployment nginx-test <span class="nt">--type</span><span class="o">=</span>NodePort <span class="nt">--port</span><span class="o">=</span>80
+</code></pre></div></div>
+
+<p>Access nginx via your Raspberry Pi’s IP address.</p>
+
+<h2 id="setting-up-a-multi-node-k3s-cluster">Setting Up a Multi-Node k3s Cluster</h2>
+
+<h3 id="step-1-install-the-k3s-server-control-plane">Step 1: Install the k3s Server (Control Plane)</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-sfL</span> https://get.k3s.io | sh -
+</code></pre></div></div>
+
+<p>Retrieve the token for joining worker nodes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /var/lib/rancher/k3s/server/node-token
+</code></pre></div></div>
+
+<h3 id="step-2-join-worker-nodes">Step 2: Join Worker Nodes</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-sfL</span> https://get.k3s.io | <span class="nv">K3S_URL</span><span class="o">=</span><span class="s2">"https://YOUR_K3S_SERVER_IP:6443"</span> <span class="nv">K3S_TOKEN</span><span class="o">=</span><span class="s2">"YOUR_NODE_TOKEN"</span> sh -
+</code></pre></div></div>
+
+<p>Replace the placeholders with the actual server IP and token.</p>
+
+<h3 id="step-3-verify-cluster-status">Step 3: Verify Cluster Status</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get nodes
+</code></pre></div></div>
+
+<p>All nodes should appear with the status  <strong>Ready</strong> .</p>
+
+<h3 id="step-4-deploy-applications">Step 4: Deploy Applications</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">kubectl</code> or <strong>Helm</strong> to deploy applications.</p>
+
+<h2 id="example-deployment-manifest">Example Deployment Manifest</h2>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">hello-k3s</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">hello-k3s</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">hello-k3s</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">hello-k3s</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">80</span>
+</code></pre></div></div>
+
+<h3 id="apply-deployment">Apply Deployment</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> deployment.yaml
+</code></pre></div></div>
+
+<h3 id="expose-service">Expose Service</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl expose deployment hello-k3s <span class="nt">--type</span><span class="o">=</span>NodePort <span class="nt">--port</span><span class="o">=</span>80
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>k3s makes it easier to deploy Kubernetes in constrained environments while retaining compatibility with standard Kubernetes features. By following these steps, you can set up a k3s cluster for learning, development, or small-scale production use.</p>
 
 			   <hr>
 			   <div class="related-posts">
@@ -96,12 +206,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	June  5, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post1.html">A Full and Comprehensive Style Test (HTML)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post7.html">Long-Term Dividend Investing</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -109,12 +219,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	May 27, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post2.html">Another markdown full cheatsheet demo (Markdown)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post6.html">Traefik</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -122,12 +232,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	April  2, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post3.html">Now some lorem ipsum</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post5.html">MetalLB</a></strong>
 								 </h6>
 							 </div>
 						</div>

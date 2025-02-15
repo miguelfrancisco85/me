@@ -9,7 +9,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
     
-      <title>Now some lorem ipsum</title>
+      <title>ArgoCD</title>
     
 
     <!-- Bootstrap -->
@@ -64,38 +64,122 @@
     <div class="container">
 	<div class="blog-post">
 		<h3>
-		  <strong><a href="/post3.html">Now some lorem ipsum</a></strong>
+		  <strong><a href="/post3.html">ArgoCD</a></strong>
 		</h3>
 	</div>
 	<div class="blog-title">
 		<h4>
-		April  2, 2013
+		February 13, 2025
 			&nbsp;&nbsp;
 			
-			 <span class="label label-success">News</span>
+			 <span class="label label-success">GitOps</span>
 			
-			 <span class="label label-success">Tags</span>
+			 <span class="label label-success">Kubernetes</span>
 			
-			 <span class="label label-success">Blog</span>
+			 <span class="label label-success">Continuous Delivery</span>
 			
-			 <span class="label label-success">Post</span>
+			 <span class="label label-success">DevOps</span>
 			
 		</h4>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="blogpost">
-			  <p>Expetenda deseruisse eam no, purto adhuc ut pri, ex vocent iracundia theophrastus usu. Dicta causae meliore ex vel, in vix erant integre petentium. Vix ei nisl scripta recusabo, eam doming blandit facilisis ex. No odio persequeris usu, in sea euismod explicari referrentur. Dicit libris iuvaret vim at. Eu noster luptatum pri, magna soleat graeco eu pro.</p>
+			  <h1 id="argocd">ArgoCD</h1>
 
-<p>Vix id vivendum conceptam, et movet commodo indoctum vel. An mea nisl impedit principes. Qui at quod munere dissentiet, vix at modus oporteat consequuntur. Ius saepe fastidii ea, mei ne falli dicunt aeterno. Euismod consetetur ea sed.</p>
+<h2 id="what-is-argocd">What is ArgoCD?</h2>
 
-<p>Nostrum vivendum conceptam ea sed, te nam meliore vivendo. At usu aliquip prompta, et eos dico alterum neglegentur, lucilius lobortis in vis. Vulputate cotidieque ut nec, quem persius sea ex, an mea luptatum oporteat. Dolor scribentur te sit, cum facilisi forensibus id, duo virtute forensibus voluptatum ad.</p>
+<p><strong>ArgoCD</strong> is a declarative, GitOps-based continuous delivery tool for Kubernetes. It automates the deployment and synchronization of applications defined in Git repositories. This document covers its key features and installation steps on Kubernetes clusters.</p>
 
-<p>Inermis recusabo elaboraret mea et, dicat neglegentur vim te. Nec et sanctus scriptorem, usu ex sapientem gubergren. Tamquam admodum ei usu. Sea at tota soleat tibique, per an fugit accumsan disputando, no justo augue civibus nam.</p>
+<h2 id="key-features-of-argocd">Key Features of ArgoCD</h2>
 
-<p>Mei ei quando convenire, nec ea wisi utroque intellegebat. Essent putant indoctum sed in, reprimique persequeris neglegentur te quo. Nam rebum tractatos partiendo at, debet ubique oporteat ut his, ullum consul audire an est. Id legere saperet gloriatur nam, cum molestie percipit ex.</p>
+<ul>
+  <li><strong>GitOps-based:</strong> Uses Git as the source of truth for application state.</li>
+  <li><strong>Automated Synchronization:</strong> Ensures deployed applications match the desired state.</li>
+  <li><strong>Multi-Cluster Management:</strong> Supports deploying applications across multiple clusters.</li>
+  <li><strong>RBAC &amp; SSO:</strong> Provides role-based access control and integrates with Single Sign-On (SSO) providers.</li>
+  <li><strong>Web UI &amp; CLI:</strong> Offers a user-friendly dashboard and command-line interface.</li>
+</ul>
 
-<p>Eam ut indoctum honestatis reprehendunt, at nam quot nullam fabulas. Graeci vivendo liberavisse his ex, wisi mandamus eu cum, ei sed exerci definitiones. Diam prompta pro ad, dolor corpora ei mea. Ex tantas eleifend duo.</p>
+<h2 id="installing-argocd-on-kubernetes">Installing ArgoCD on Kubernetes</h2>
+
+<h3 id="step-1-install-argocd">Step 1: Install ArgoCD</h3>
+
+<p>Apply the official ArgoCD manifests:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-n</span> argocd <span class="nt">-f</span> https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+</code></pre></div></div>
+
+<h3 id="step-2-expose-the-argocd-api-server">Step 2: Expose the ArgoCD API Server</h3>
+
+<p>Use a LoadBalancer, Ingress, or port-forwarding:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl port-forward svc/argocd-server <span class="nt">-n</span> argocd 8080:443
+</code></pre></div></div>
+
+<h3 id="step-3-retrieve-admin-password">Step 3: Retrieve Admin Password</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get secret argocd-initial-admin-secret <span class="nt">-n</span> argocd <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s2">"{.data.password}"</span> | <span class="nb">base64</span> <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h3 id="step-4-login-to-argocd">Step 4: Login to ArgoCD</h3>
+
+<p>Use the CLI to authenticate:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argocd login localhost:8080 <span class="nt">--username</span> admin <span class="nt">--password</span> &lt;PASSWORD&gt;
+</code></pre></div></div>
+
+<h2 id="deploying-an-application-with-argocd">Deploying an Application with ArgoCD</h2>
+
+<h3 id="step-1-register-a-git-repository">Step 1: Register a Git Repository</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argocd repo add https://github.com/your/repository.git <span class="nt">--username</span> &lt;USER&gt; <span class="nt">--password</span> &lt;PASSWORD&gt;
+</code></pre></div></div>
+
+<h3 id="step-2-create-an-application">Step 2: Create an Application</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argocd app create my-app <span class="se">\</span>
+    <span class="nt">--repo</span> https://github.com/your/repository.git <span class="se">\</span>
+    <span class="nt">--path</span> k8s-manifests <span class="se">\</span>
+    <span class="nt">--dest-server</span> https://kubernetes.default.svc <span class="se">\</span>
+    <span class="nt">--dest-namespace</span> default
+</code></pre></div></div>
+
+<h3 id="step-3-sync-the-application">Step 3: Sync the Application</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argocd app <span class="nb">sync </span>my-app
+</code></pre></div></div>
+
+<h3 id="step-4-check-application-status">Step 4: Check Application Status</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argocd app get my-app
+</code></pre></div></div>
+
+<h2 id="example-deployment-manifest">Example Deployment Manifest</h2>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">argoproj.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Application</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-app</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">argocd</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">destination</span><span class="pi">:</span>
+    <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+    <span class="na">server</span><span class="pi">:</span> <span class="s">https://kubernetes.default.svc</span>
+  <span class="na">project</span><span class="pi">:</span> <span class="s">default</span>
+  <span class="na">source</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">k8s-manifests</span>
+    <span class="na">repoURL</span><span class="pi">:</span> <span class="s">https://github.com/your/repository.git</span>
+    <span class="na">targetRevision</span><span class="pi">:</span> <span class="s">HEAD</span>
+  <span class="na">syncPolicy</span><span class="pi">:</span>
+    <span class="na">automated</span><span class="pi">:</span>
+      <span class="na">prune</span><span class="pi">:</span> <span class="kc">true</span>
+      <span class="na">selfHeal</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>ArgoCD simplifies application delivery by integrating GitOps principles into Kubernetes environments. By following these steps, you can set up ArgoCD for automated and declarative continuous delivery.</p>
 
 			   <hr>
 			   <div class="related-posts">
@@ -104,12 +188,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	June  5, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post1.html">A Full and Comprehensive Style Test (HTML)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post7.html">Long-Term Dividend Investing</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -117,12 +201,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	May 27, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post2.html">Another markdown full cheatsheet demo (Markdown)</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post6.html">Traefik</a></strong>
 								 </h6>
 							 </div>
 						</div>
@@ -130,12 +214,12 @@
 						<div class="row">
 							 <div class="col-sm-4 col-md-4 col-lg-4">
 								 <h6 style="text-align: right">
-								 	March 15, 2013
+								 	February 13, 2025
 								 </h6>
 							 </div>
 							 <div class="col-sm-8 col-md-8 col-lg-8">
 								 <h6 style="text-align: left">
-								 	<strong><a href="//post4.html">Continued...</a></strong>
+								 	<strong><a href="https://miguelnunezburguera.com/post5.html">MetalLB</a></strong>
 								 </h6>
 							 </div>
 						</div>
