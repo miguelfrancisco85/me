@@ -9,7 +9,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
     
-      <title>ESP</title>
+      <title>MetalLB</title>
     
 
     <!-- Bootstrap -->
@@ -61,94 +61,72 @@
 </nav>
 
 
-    Home Assistant is an open-source home automation platform that allows users to control their smart devices and create complex automations. It is written in Python, a popular high-level programming language, and can be installed on various platforms including Raspberry Pi and Kubernetes clusters using k3s. In this document, we will provide an overview of Home Assistant, its features, how to install it on a Raspberry Pi, and how to set it up in a Kubernetes cluster using k3s.
+    <h1>MetalLB: Load Balancer for Bare Metal Kubernetes</h1>
 
-<strong>What is Home Assistant?</strong>
+<h2>What is MetalLB?</h2>
+<p><strong>MetalLB</strong> is a load balancer solution for Kubernetes clusters running on bare metal. It provides network load balancing functionality where cloud provider solutions like AWS ELB or GCP LB are unavailable. This document covers its key features and installation steps on Kubernetes clusters.</p>
 
-Home Assistant is a flexible and customizable home automation platform that provides users with a central hub to control and automate their smart devices. With Home Assistant, users can integrate a wide range of devices and services, including lights, sensors, thermostats, cameras, and more. It is compatible with over 1400 different devices and services, making it one of the most versatile home automation platforms available.
+<h2>Key Features of MetalLB</h2>
+<ul>
+    <li><strong>BGP and Layer 2 Modes:</strong> Supports both Border Gateway Protocol (BGP) and Layer 2 (ARP-based) load balancing.</li>
+    <li><strong>Cloud-Native Integration:</strong> Works seamlessly with Kubernetes Services of type LoadBalancer.</li>
+    <li><strong>Custom IP Address Pools:</strong> Allows administrators to define external IP ranges.</li>
+    <li><strong>Lightweight and Simple:</strong> Easy to configure and deploy.</li>
+    <li><strong>High Availability:</strong> Can be configured for redundancy in large-scale environments.</li>
+</ul>
 
-<strong>Home Assistant Features:</strong>
+<h2>Installing MetalLB on Kubernetes</h2>
 
-Home Assistant comes with a variety of features, including:
+<h3>Step 1: Install MetalLB</h3>
+<p>Apply the official MetalLB manifests:</p>
+<pre><code>kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/main/config/manifests/metallb-native.yaml</code></pre>
 
-Integrations: Home Assistant allows users to integrate with a wide range of devices and services, such as Google Home, Amazon Alexa, Philips Hue, Nest, and more.
-
-Automations: Users can create complex automations using Home Assistant's visual editor, allowing them to automate tasks based on various conditions.
-
-User Interface: Home Assistant's user interface is highly customizable, allowing users to create their own dashboards and layouts.
-
-Add-ons: Home Assistant has a growing library of add-ons, which are pre-configured software packages that users can install to extend the platform's functionality.
-
-<strong>Installing Home Assistant on Raspberry Pi:</strong>
-
-To install Home Assistant on a Raspberry Pi, follow these steps:
-
-Download the latest version of Raspberry Pi OS and flash it to an SD card.
-
-Connect the Raspberry Pi to your network and power it on.
-
-SSH into the Raspberry Pi and run the following commands:
-
-sudo apt-get update
-sudo apt-get install python3 python3-dev python3-pip
-sudo pip3 install homeassistant
-
-Once the installation is complete, run the following command to start Home Assistant:
-
-sudo systemctl start home-assistant@homeassistant.service
-
-Access the Home Assistant web interface by navigating to http://<your-raspberry-pi-ip-address>:8123 in your web browser.
-    
-<strong>Installing Home Assistant on Kubernetes Cluster using k3s:</strong>
-    
-To install Home Assistant on a Kubernetes cluster using k3s, follow these steps:
-    
-Install k3s on your Kubernetes cluster. You can follow the k3s installation guide for your specific platform.
-    
-Create a new namespace for Home Assistant:
-
-kubectl create namespace home-assistant
-
-Create a new deployment:
-
-apiVersion: apps/v1
-kind: Deployment
+<h3>Step 2: Configure MetalLB</h3>
+<p>Create a ConfigMap defining the address pool:</p>
+<pre><code>kubectl apply -f - <<EOF
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: home-assistant
-  namespace: home-assistant
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default-pool
+      protocol: layer2
+      addresses:
+      - 192.168.1.100-192.168.1.200
+EOF</code></pre>
+
+<h3>Step 3: Verify Installation</h3>
+<pre><code>kubectl get pods -n metallb-system</code></pre>
+
+<h2>Exposing a Service with MetalLB</h2>
+
+<h3>Step 1: Create a LoadBalancer Service</h3>
+<pre><code>kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
-  replicas: 1
   selector:
-    matchLabels:
-      app: home-assistant
-  template:
-    metadata:
-      labels:
-        app: home-assistant
-    spec:
-      containers:
-      - name: home-assistant
-        image: homeassistant/home-assistant:latest
-        ports:
-        - containerPort: 8123
-        volumeMounts:
-        - name: config
-          mountPath: /config
-      volumes:
-      - name: config
-        configMap:
-          name: home-assistant-config
+    app: my-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+EOF</code></pre>
 
-Create a config map containing your Home Assistant configuration:
+<h3>Step 2: Check the Assigned External IP</h3>
+<pre><code>kubectl get svc my-service</code></pre>
 
-kubectl create configmap home-assistant-config --from-file=configuration.yaml
+<p>The external IP should be assigned from the configured range.</p>
 
-Access the Home Assistant web interface by navigating to http://<your-kubernetes-node-ip-address>:<node-port> in your web browser, where <node-port> is the port that you specified in your Kubernetes service definition.
+<h2>Conclusion</h2>
+<p>MetalLB enables Kubernetes clusters running on bare metal to leverage external load balancing without cloud provider dependencies. By following these steps, you can set up MetalLB to handle Kubernetes LoadBalancer services efficiently.</p>
 
-    Optionally, you can expose Home Assistant to the internet using a Kubernetes ingress controller or a load balancer.
-    Conclusion:
-    
-    Home Assistant is a powerful home automation platform that allows users to control their smart devices and create complex automations. It is written in Python and can be installed on various platforms, including Raspberry Pi and Kubernetes clusters using k3s. By following the steps outlined in this document, you should be able to install and configure Home Assistant on your desired platform and start automating your home today.
 
   </div>
   <!-- Footer -->

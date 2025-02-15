@@ -1,93 +1,91 @@
 ---
 layout: page
-title: ESP
+title: "k3s"
 ---
 
-Home Assistant is an open-source home automation platform that allows users to control their smart devices and create complex automations. It is written in Python, a popular high-level programming language, and can be installed on various platforms including Raspberry Pi and Kubernetes clusters using k3s. In this document, we will provide an overview of Home Assistant, its features, how to install it on a Raspberry Pi, and how to set it up in a Kubernetes cluster using k3s.
+<h1>k3s: A Lightweight Kubernetes Distribution</h1>
 
-<strong>What is Home Assistant?</strong>
+<h2>What is k3s?</h2>
+<p><strong>k3s</strong> is a lightweight Kubernetes distribution developed by Rancher Labs. It's designed for resource-constrained environments like IoT devices, home labs, or small-scale deployments. This document covers its key features and installation steps on both Raspberry Pi and multi-node clusters.</p>
 
-Home Assistant is a flexible and customizable home automation platform that provides users with a central hub to control and automate their smart devices. With Home Assistant, users can integrate a wide range of devices and services, including lights, sensors, thermostats, cameras, and more. It is compatible with over 1400 different devices and services, making it one of the most versatile home automation platforms available.
+<h2>Key Features of k3s</h2>
+<ul>
+    <li><strong>Lightweight:</strong> Smaller footprint and fewer system resources than standard Kubernetes.</li>
+    <li><strong>Simplified Deployment:</strong> Runs as a single binary, reducing complexity.</li>
+    <li><strong>Built-in SQLite or etcd:</strong> Simplifies setup by eliminating external dependencies.</li>
+    <li><strong>IoT & Edge Compatibility:</strong> Works well on Raspberry Pi and ARM architectures.</li>
+    <li><strong>Helm Support:</strong> Allows easy application deployment.</li>
+</ul>
 
-<strong>Home Assistant Features:</strong>
+<h2>Installing k3s on Raspberry Pi</h2>
 
-Home Assistant comes with a variety of features, including:
+<h3>Step 1: Prepare the Raspberry Pi</h3>
+<p>Ensure your system is up to date:</p>
+<pre><code>sudo apt-get update && sudo apt-get upgrade -y</code></pre>
 
-Integrations: Home Assistant allows users to integrate with a wide range of devices and services, such as Google Home, Amazon Alexa, Philips Hue, Nest, and more.
+<h3>Step 2: Install k3s</h3>
+<pre><code>curl -sfL https://get.k3s.io | sh -</code></pre>
 
-Automations: Users can create complex automations using Home Assistant's visual editor, allowing them to automate tasks based on various conditions.
+<p>This installs k3s as a service and sets up a single-node cluster.</p>
 
-User Interface: Home Assistant's user interface is highly customizable, allowing users to create their own dashboards and layouts.
+<h3>Step 3: Verify Installation</h3>
+<pre><code>sudo kubectl get nodes</code></pre>
 
-Add-ons: Home Assistant has a growing library of add-ons, which are pre-configured software packages that users can install to extend the platform's functionality.
+<p>Your Raspberry Pi should be listed as <strong>Ready</strong>.</p>
 
-<strong>Installing Home Assistant on Raspberry Pi:</strong>
+<h3>Step 4: Deploy a Test Application</h3>
+<pre><code>kubectl create deployment nginx-test --image=nginx
+kubectl expose deployment nginx-test --type=NodePort --port=80</code></pre>
 
-To install Home Assistant on a Raspberry Pi, follow these steps:
+<p>Access nginx via your Raspberry Pi’s IP address.</p>
 
-Download the latest version of Raspberry Pi OS and flash it to an SD card.
+<h2>Setting Up a Multi-Node k3s Cluster</h2>
 
-Connect the Raspberry Pi to your network and power it on.
+<h3>Step 1: Install the k3s Server (Control Plane)</h3>
+<pre><code>curl -sfL https://get.k3s.io | sh -</code></pre>
 
-SSH into the Raspberry Pi and run the following commands:
+<p>Retrieve the token for joining worker nodes:</p>
+<pre><code>cat /var/lib/rancher/k3s/server/node-token</code></pre>
 
-sudo apt-get update
-sudo apt-get install python3 python3-dev python3-pip
-sudo pip3 install homeassistant
+<h3>Step 2: Join Worker Nodes</h3>
+<pre><code>curl -sfL https://get.k3s.io | K3S_URL="https://YOUR_K3S_SERVER_IP:6443" K3S_TOKEN="YOUR_NODE_TOKEN" sh -</code></pre>
 
-Once the installation is complete, run the following command to start Home Assistant:
+<p>Replace the placeholders with the actual server IP and token.</p>
 
-sudo systemctl start home-assistant@homeassistant.service
+<h3>Step 3: Verify Cluster Status</h3>
+<pre><code>kubectl get nodes</code></pre>
 
-Access the Home Assistant web interface by navigating to http://<your-raspberry-pi-ip-address>:8123 in your web browser.
-    
-<strong>Installing Home Assistant on Kubernetes Cluster using k3s:</strong>
-    
-To install Home Assistant on a Kubernetes cluster using k3s, follow these steps:
-    
-Install k3s on your Kubernetes cluster. You can follow the k3s installation guide for your specific platform.
-    
-Create a new namespace for Home Assistant:
+<p>All nodes should appear with the status <strong>Ready</strong>.</p>
 
-kubectl create namespace home-assistant
+<h3>Step 4: Deploy Applications</h3>
+<p>Use <code>kubectl</code> or <strong>Helm</strong> to deploy applications.</p>
 
-Create a new deployment:
-
-apiVersion: apps/v1
+<h2>Example Deployment Manifest</h2>
+<pre><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: home-assistant
-  namespace: home-assistant
+  name: hello-k3s
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: home-assistant
+      app: hello-k3s
   template:
     metadata:
       labels:
-        app: home-assistant
+        app: hello-k3s
     spec:
       containers:
-      - name: home-assistant
-        image: homeassistant/home-assistant:latest
+      - name: hello-k3s
+        image: nginx
         ports:
-        - containerPort: 8123
-        volumeMounts:
-        - name: config
-          mountPath: /config
-      volumes:
-      - name: config
-        configMap:
-          name: home-assistant-config
+        - containerPort: 80</code></pre>
 
-Create a config map containing your Home Assistant configuration:
+<h3>Apply Deployment</h3>
+<pre><code>kubectl apply -f deployment.yaml</code></pre>
 
-kubectl create configmap home-assistant-config --from-file=configuration.yaml
+<h3>Expose Service</h3>
+<pre><code>kubectl expose deployment hello-k3s --type=NodePort --port=80</code></pre>
 
-Access the Home Assistant web interface by navigating to http://<your-kubernetes-node-ip-address>:<node-port> in your web browser, where <node-port> is the port that you specified in your Kubernetes service definition.
-
-    Optionally, you can expose Home Assistant to the internet using a Kubernetes ingress controller or a load balancer.
-    Conclusion:
-    
-    Home Assistant is a powerful home automation platform that allows users to control their smart devices and create complex automations. It is written in Python and can be installed on various platforms, including Raspberry Pi and Kubernetes clusters using k3s. By following the steps outlined in this document, you should be able to install and configure Home Assistant on your desired platform and start automating your home today.
+<h2>Conclusion</h2>
+<p>k3s makes it easier to deploy Kubernetes in constrained environments while retaining compatibility with standard Kubernetes features. By following these steps, you can set up a k3s cluster for learning, development, or small-scale production use.</p>

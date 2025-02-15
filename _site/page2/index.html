@@ -9,7 +9,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
     
-      <title>ArgoCD</title>
+      <title>Miguel Francisco Nuñez Bueguera</title>
     
 
     <!-- Bootstrap -->
@@ -61,77 +61,39 @@
 </nav>
 
 
-    <h1>ArgoCD: Declarative GitOps Continuous Delivery</h1>
+    <section id="about">
+	<div class="container">
+	  <div class="avatar">
+		<img class="img-circle" src="/static/img/profile.png" alt="Responsive image">
+	  </div>
+	  <h3>I'm <strong>Miguel Francisco Nuñez Burguera</strong>, a Cloud Architect.</h3>
+	  <h3>I love everything related to computer science and home automation.</h3>
+	  <h3>Have a look at some of my working <a href="/projects.html"> projects</a>.</h3>
+	  <h3>For more check out my academic &amp; professional <a href="https://cv.miguelnunezburguera.com/">Resume</a>.</h3>
+	  <h3>Contact me at <a href="http://twitter.com/Miguelfrancisco">@Miguelfrancisco</a> or by <a href="mailto:miguelfrancisco85@gmail.com">email</a>.</h3>
+	  <div class="social">
+	<h4>
+    
+	  <a href="http://linkedin.com/in/miguel-francisco-nunez-burguera"><i class="fa fa-linkedin"></i></a>
+    
+    
+	  <a href="mailto:miguelfrancisco85@gmail.com"><i class="fa fa-envelope"></i></a>
+    
+    
+	  <a href="http://github.com/miguelfrancisco85# username"><i class="fa fa-github"></i></a>
+    
+    
+	  <a href="http://stackoverflow.com//users/9019014/miguelfrancisco85"><i class="fa fa-stack-overflow"></i></a>
+    
+    
+    
+	  <a href="http://twitter.com/Miguelfrancisco"><i class="fa fa-twitter"></i></a>
+    
+	</h4>
+</div>
 
-<h2>What is ArgoCD?</h2>
-<p><strong>ArgoCD</strong> is a declarative, GitOps-based continuous delivery tool for Kubernetes. It automates the deployment and synchronization of applications defined in Git repositories. This document covers its key features and installation steps on Kubernetes clusters.</p>
-
-<h2>Key Features of ArgoCD</h2>
-<ul>
-    <li><strong>GitOps-based:</strong> Uses Git as the source of truth for application state.</li>
-    <li><strong>Automated Synchronization:</strong> Ensures deployed applications match the desired state.</li>
-    <li><strong>Multi-Cluster Management:</strong> Supports deploying applications across multiple clusters.</li>
-    <li><strong>RBAC & SSO:</strong> Provides role-based access control and integrates with Single Sign-On (SSO) providers.</li>
-    <li><strong>Web UI & CLI:</strong> Offers a user-friendly dashboard and command-line interface.</li>
-</ul>
-
-<h2>Installing ArgoCD on Kubernetes</h2>
-
-<h3>Step 1: Install ArgoCD</h3>
-<p>Apply the official ArgoCD manifests:</p>
-<pre><code>kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml</code></pre>
-
-<h3>Step 2: Expose the ArgoCD API Server</h3>
-<p>Use a LoadBalancer, Ingress, or port-forwarding:</p>
-<pre><code>kubectl port-forward svc/argocd-server -n argocd 8080:443</code></pre>
-
-<h3>Step 3: Retrieve Admin Password</h3>
-<pre><code>kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d</code></pre>
-
-<h3>Step 4: Login to ArgoCD</h3>
-<p>Use the CLI to authenticate:</p>
-<pre><code>argocd login localhost:8080 --username admin --password &lt;PASSWORD&gt;</code></pre>
-
-<h2>Deploying an Application with ArgoCD</h2>
-
-<h3>Step 1: Register a Git Repository</h3>
-<pre><code>argocd repo add https://github.com/your/repository.git --username &lt;USER&gt; --password &lt;PASSWORD&gt;</code></pre>
-
-<h3>Step 2: Create an Application</h3>
-<pre><code>argocd app create my-app \
-    --repo https://github.com/your/repository.git \
-    --path k8s-manifests \
-    --dest-server https://kubernetes.default.svc \
-    --dest-namespace default</code></pre>
-
-<h3>Step 3: Sync the Application</h3>
-<pre><code>argocd app sync my-app</code></pre>
-
-<h3>Step 4: Check Application Status</h3>
-<pre><code>argocd app get my-app</code></pre>
-
-<h2>Example Deployment Manifest</h2>
-<pre><code>apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: my-app
-  namespace: argocd
-spec:
-  destination:
-    namespace: default
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    path: k8s-manifests
-    repoURL: https://github.com/your/repository.git
-    targetRevision: HEAD
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true</code></pre>
-
-<h2>Conclusion</h2>
-<p>ArgoCD simplifies application delivery by integrating GitOps principles into Kubernetes environments. By following these steps, you can set up ArgoCD for automated and declarative continuous delivery.</p>
+	</div>
+</section>
 
 
   </div>

@@ -3,44 +3,47 @@ layout: page
 title: ESP
 ---
 
-<strong>What are ESP and NodeMCU?</strong>
+<h1>ESP and NodeMCU</h1>
 
-ESP (Espressif Systems Processors) are low-cost microcontrollers widely used for IoT (Internet of Things) applications. They are powerful, Wi-Fi-enabled chips that allow users to create smart devices, automation projects, and home monitoring solutions.
+<h2>What are ESP and NodeMCU?</h2>
+<p>ESP (Espressif Systems Processors) are low-cost microcontrollers widely used for IoT (Internet of Things) applications. They are powerful, Wi-Fi-enabled chips that allow users to create smart devices, automation projects, and home monitoring solutions.</p>
 
-NodeMCU is a development board based on the ESP8266 chip. It simplifies programming and prototyping by providing a built-in USB-to-serial interface and additional GPIO pins for connecting sensors and actuators.
+<p>NodeMCU is a development board based on the ESP8266 chip. It simplifies programming and prototyping by providing a built-in USB-to-serial interface and additional GPIO pins for connecting sensors and actuators.</p>
 
-<strong>Popular ESP Models:</strong>
+<h2>Popular ESP Models:</h2>
+<ul>
+    <li><strong>ESP8266:</strong> A compact and affordable Wi-Fi-enabled microcontroller, commonly used in small IoT projects.</li>
+    <li><strong>ESP32:</strong> A more advanced version with dual-core processing, Bluetooth connectivity, and additional GPIO pins, ideal for complex automation systems.</li>
+    <li><strong>NodeMCU:</strong> A development board that simplifies working with ESP8266 and provides a user-friendly environment for programming and connecting components.</li>
+</ul>
 
-ESP8266: A compact and affordable Wi-Fi-enabled microcontroller, commonly used in small IoT projects.
-ESP32: A more advanced version with dual-core processing, Bluetooth connectivity, and additional GPIO pins, ideal for complex automation systems.
-NodeMCU: A development board that simplifies working with ESP8266 and provides a user-friendly environment for programming and connecting components.
+<h2>Uses of ESP in Home Automation:</h2>
+<ul>
+    <li>Smart switches and relays for controlling lights and appliances remotely.</li>
+    <li>Environmental monitoring using temperature, humidity, and air quality sensors.</li>
+    <li>Security systems with motion sensors and cameras.</li>
+    <li>Control of water consumption to monitor and manage usage efficiently.</li>
+    <li>Control of electrical consumption for optimizing energy usage and reducing waste.</li>
+    <li>Integration with Home Assistant to enhance home automation capabilities.</li>
+</ul>
 
-<strong>Uses of ESP in Home Automation:</strong>
+<h2>Installing Firmware on ESP:</h2>
+<p>To program an ESP device, you need to install the firmware using a programming tool like the Arduino IDE or ESPHome. Follow these steps:</p>
+<ol>
+    <li>Install Arduino IDE and add the ESP board manager.</li>
+    <li>Connect your ESP device to your computer via USB.</li>
+    <li>Open Arduino IDE and select the appropriate board (e.g., ESP8266 or ESP32).</li>
+    <li>Install required libraries, such as ESPHome for Home Assistant integration.</li>
+    <li>Write a basic script to test the connection (e.g., blinking an LED or connecting to Wi-Fi).</li>
+    <li>Upload the script to the ESP and monitor its functionality.</li>
+</ol>
 
-- Smart switches and relays for controlling lights and appliances remotely.
-- Environmental monitoring using temperature, humidity, and air quality sensors.
-- Security systems with motion sensors and cameras.
-- Control of water consumption to monitor and manage usage efficiently.
-- Control of electrical consumption for optimizing energy usage and reducing waste.
-- Integration with Home Assistant to enhance home automation capabilities.
-
-<strong>Installing Firmware on ESP:</strong>
-
-To program an ESP device, you need to install the firmware using a programming tool like the Arduino IDE or ESPHome. Follow these steps:
-
-1. Install Arduino IDE and add the ESP board manager.
-2. Connect your ESP device to your computer via USB.
-3. Open Arduino IDE and select the appropriate board (e.g., ESP8266 or ESP32).
-4. Install required libraries, such as ESPHome for Home Assistant integration.
-5. Write a basic script to test the connection (e.g., blinking an LED or connecting to Wi-Fi).
-6. Upload the script to the ESP and monitor its functionality.
-
-<strong>Setting up ESP for Home Automation:</strong>
-
-To integrate ESP with Home Assistant:
-
-1. Install ESPHome on your Home Assistant instance.
-2. Create a new ESPHome configuration file and define sensors, switches, or actuators.
-3. Flash the ESP device with the generated firmware.
-4. Connect the ESP to your home network.
-5. Add the ESP device to Home Assistant and configure automation rules.
+<h2>Setting up ESP for Home Automation:</h2>
+<p>To integrate ESP with Home Assistant:</p>
+<ol>
+    <li>Install ESPHome on your Home Assistant instance.</li>
+    <li>Create a new ESPHome configuration file and define sensors, switches, or actuators.</li>
+    <li>Flash the ESP device with the generated firmware.</li>
+    <li>Connect the ESP to your home network.</li>
+    <li>Add the ESP device to Home Assistant and configure automation rules.</li>
+</ol>
